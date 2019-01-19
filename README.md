@@ -1,4 +1,4 @@
-# qlik-connetapi
+# qlik-connectapi
 [![Nuget](https://img.shields.io/nuget/v/qlik-connectapi.svg)](https://www.nuget.org/packages/qlik-connectapi)
 [![TravisCI](https://travis-ci.com/q2g/qlik-connectapi.svg?branch=master)](https://travis-ci.org/q2g/qlik-connectapi)
 
