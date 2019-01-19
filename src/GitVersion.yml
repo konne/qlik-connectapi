@@ -1,0 +1,4 @@
+#ignore:
+#  sha:
+#    - SHA
+#  regex: dependabot
