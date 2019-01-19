@@ -5,14 +5,13 @@
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<Authors>Konrad Mattheis, Martin Berthold</Authors>
 		<Company>q2g</Company>
-		<RepositoryUrl>https://github.com/q2g/qlik-sseapi/</RepositoryUrl>
-		<PackageLicenseUrl>https://raw.githubusercontent.com/q2g/qlik-sseapi/master/LICENSE</PackageLicenseUrl>
-		<PackageProjectUrl>https://www.nuget.org/packages/qlik-sseapi/</PackageProjectUrl>
-		<PackageTags>Qlik, SSE</PackageTags>
-		<Description>This packages allows to easy build a connector for the qlik sse api</Description>
+		<RepositoryUrl>https://github.com/q2g/qlik-connectapi/</RepositoryUrl>
+		<PackageProjectUrl>https://www.nuget.org/packages/qlik-connectapi/</PackageProjectUrl>
+		<PackageTags>Qlik, GRPC, Data</PackageTags>
+		<Description>This packages allows to easy build a connector for the qlik connector api</Description>
 
 		<Version>$(GitVersion_NuGetVersion)</Version>
-		<RootNamespace>Qlik.Sse</RootNamespace>
+		<RootNamespace>Qlik.Connect</RootNamespace>
 	</PropertyGroup>
 
 	<Target Name="FixOnGitVersionTaskError" BeforeTargets="GetAssemblyVersion">
