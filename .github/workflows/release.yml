@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    branches: [ master, development ]
+    branches: [master, development ]
     paths:
       - 'src/**'
       - '.github/workflows/release.yml'
@@ -17,11 +17,6 @@ jobs:
       uses: gittools/actions/gitversion/setup@v0.9.3
       with:
          versionSpec: '5.3.x'
-
-    - name: Install gitreleasemanager
-      uses: gittools/actions/gitreleasemanager/setup@v0.9.3
-      with:
-         versionSpec: '0.11.x'
 
     - name: checkout
       uses: actions/checkout@v2
@@ -46,24 +41,23 @@ jobs:
       id: gitversion
       uses: gittools/actions/gitversion/execute@v0.9.3
 
-    - name: set preRelease
-      uses: allenevans/set-env@v1.0.0
-      env:
-        IS_PRE_RELEASE: 'true'
+    - name: create release
+      id: create_release
+      uses: release-drafter/release-drafter@v5
+        with:
+          # (Optional) specify config name to use, relative to .github/. Default: release-drafter.yml
+          # config-name: my-config.yml
+          tag: 2.0.0
+          name: test2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: check preRelease
-      if: ${{ steps.gitversion.outputs.preReleaseLabel  == ''  }}
-      uses: allenevans/set-env@v1.0.0
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
       env:
-        IS_PRE_RELEASE: 'false'
-
-    - name: Create release
-      uses: gittools/actions/gitreleasemanager/create@v0.9.3
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        owner: ${{ github.repository_owner }}
-        repository: 'qlik-connectapi'
-        isPreRelease: ${{ env.IS_PRE_RELEASE }}
-        name: ${{ steps.gitversion.outputs.semVer }}
-        assets: |
-          src\bin\Release\qlik-connectapi.${{ steps.gitversion.outputs.semVer }}.nupkg
+        upload_url: ${{ steps.create_release.outputs.upload_url }} 
+        asset_path: ./src/bin/Release/qlik-connectapi..${{ steps.gitversion.outputs.semVer }}.nupkg
+        asset_name: qlik-connectapi..${{ steps.gitversion.outputs.semVer }}.nupkg
+        asset_content_type: application/zip
