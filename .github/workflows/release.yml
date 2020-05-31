@@ -49,13 +49,13 @@ jobs:
     - name: set preRelease
       uses: allenevans/set-env@v1.0.0
       with:
-        isPreRelease: 'true'
+        IS_PRE_RELEASE: 'true'
 
     - name: check preRelease
       if: ${{ steps.gitversion.outputs.preReleaseLabel  == ''  }}
       uses: allenevans/set-env@v1.0.0
       with:
-        isPreRelease: 'false'
+        IS_PRE_RELEASE: 'false'
 
     - name: Create release
       uses: gittools/actions/gitreleasemanager/create@v0.9.3
@@ -63,8 +63,7 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         owner: ${{ github.repository_owner }}
         repository: 'qlik-connectapi'
-        isPreRelease: ${{ env.isPreRelease }}
-        milestone: ${{ steps.gitversion.outputs.semVer }}
+        isPreRelease: ${{ env.IS_PRE_RELEASE }}
         name: ${{ steps.gitversion.outputs.semVer }}
         assets: |
           src\bin\Release\qlik-connectapi.${{ steps.gitversion.outputs.nuGetVersion  }}.nupkg
