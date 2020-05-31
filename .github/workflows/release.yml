@@ -8,7 +8,7 @@ on:
       - '.github/workflows/release.yml'
 
 jobs:
-  build:
+  release:
     runs-on: windows-latest
 
     ## TODO get versionspec from CSPROJ file for synchronized version
@@ -66,4 +66,4 @@ jobs:
         isPreRelease: ${{ env.IS_PRE_RELEASE }}
         name: ${{ steps.gitversion.outputs.semVer }}
         assets: |
-          src\bin\Release\qlik-connectapi.${{ steps.gitversion.outputs.nuGetVersion  }}.nupkg
+          src\bin\Release\*.nupkg
