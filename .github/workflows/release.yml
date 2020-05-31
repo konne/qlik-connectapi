@@ -21,7 +21,7 @@ jobs:
     - name: Install gitreleasemanager
       uses: gittools/actions/gitreleasemanager/setup@v0.9.3
       with:
-         versionSpec: '5.3.x'
+         versionSpec: '0.11.x'
 
     - name: checkout
       uses: actions/checkout@v2
