@@ -1,37 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net452;</TargetFrameworks>
 		<Copyright>Copyright © 2017</Copyright>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
 		<Authors>Konrad Mattheis, Martin Berthold</Authors>
-		<Company>q2g</Company>
-		<RepositoryUrl>https://github.com/q2g/qlik-connectapi/</RepositoryUrl>
+		<Company>q-masters</Company>
+		<RepositoryUrl>https://github.com/q-masters/qlik-connectapi/</RepositoryUrl>
 		<PackageProjectUrl>https://www.nuget.org/packages/qlik-connectapi/</PackageProjectUrl>
 		<PackageTags>Qlik, GRPC, Data</PackageTags>
 		<Description>This packages allows to easy build a connector for the qlik connector api</Description>
 
 		<Version>$(GitVersion_NuGetVersion)</Version>
 		<RootNamespace>Qlik.Connect</RootNamespace>
+
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
 	</PropertyGroup>
 
-	<Target Name="FixOnGitVersionTaskError" BeforeTargets="GetAssemblyVersion">
-		<CreateProperty Value="0.0.1-notgitversion" Condition="'$(GitVersion_NuGetVersion)' == ''">
-			<Output TaskParameter="Value" PropertyName="Version" />
-		</CreateProperty>
-	</Target>
-
-	<Choose>
-		<When Condition="'$(OS)' == 'Windows_NT'">
-			<PropertyGroup>
-				<TargetFrameworks>netstandard2.0;net452;</TargetFrameworks>
-			</PropertyGroup>
-		</When>
-		<Otherwise>
-			<PropertyGroup>
-				<TargetFramework>netstandard2.0</TargetFramework>
-			</PropertyGroup>
-		</Otherwise>
-	</Choose>
 	<Choose>
 		<When Condition="'$(Configuration)' == 'Release'">
 			<PropertyGroup>
@@ -45,23 +33,29 @@
 		</Otherwise>
 	</Choose>
 
-	<Target Name="PublishToNugetWithAPIKey" AfterTargets="GenerateNuspec" Condition="Exists('$(SolutionDir)\..\..\nugetapikey.txt')">
-		<ReadLinesFromFile File="$(SolutionDir)\..\..\nugetapikey.txt">
-			<Output TaskParameter="Lines" PropertyName="NugetAPIKey" />
-		</ReadLinesFromFile>
-		<Exec WorkingDirectory="$(BaseDir)" Command="dotnet nuget push $(PackageOutputAbsolutePath)$(PackageId).$(PackageVersion).nupkg -k $(NugetAPIKey) -s https://api.nuget.org/v3/index.json" />
-	</Target>
-
 	<ItemGroup>
-		<PackageReference Include="GitVersionTask" Version="4.0.0" PrivateAssets="all" />
-		<PackageReference Include="Google.Protobuf" Version="3.7.0" />
-		<PackageReference Include="Grpc" Version="1.22.0" />
-		<PackageReference Include="Grpc.Core" Version="1.20.0" />
-		<PackageReference Include="Grpc.Tools" Version="1.20.0" PrivateAssets="all" />
-		<PackageReference Include="System.Interactive.Async" Version="3.2.0" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+		<PackageReference Include="GitVersionTask" Version="5.3.5" PrivateAssets="all" />
+		<PackageReference Include="Google.Protobuf" Version="3.12.2" />
+		<PackageReference Include="Grpc" Version="2.29.0" />
+		<PackageReference Include="Grpc.Core" Version="2.29.0" />
+		<PackageReference Include="Grpc.Tools" Version="2.29.0" PrivateAssets="all" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<Protobuf Include="**/*.proto" />
 	</ItemGroup>
+
+  <Target Name="PublishToNugetWithAPIKey" AfterTargets="GenerateNuspec">
+    <ReadLinesFromFile Condition="Exists('$(SolutionDir)\..\..\nugetapikey.txt')" File="$(SolutionDir)\..\..\nugetapikey.txt">
+      <Output TaskParameter="Lines" PropertyName="NugetAPIKey" />
+    </ReadLinesFromFile>
+    <Exec Condition="('$(NugetAPIKey)' != '')" WorkingDirectory="$(BaseDir)" Command="dotnet nuget push $(PackageOutputAbsolutePath)$(PackageId).$(PackageVersion).nupkg -k $(NugetAPIKey) -s https://api.nuget.org/v3/index.json" />
+  </Target>
+
+  <Target Name="FixOnGitVersionTaskError" BeforeTargets="GetAssemblyVersion">
+    <CreateProperty Value="0.0.1-notgitversion" Condition="'$(GitVersion_NuGetVersion)' == ''">
+      <Output TaskParameter="Value" PropertyName="Version" />
+    </CreateProperty>
+  </Target>
 </Project>
