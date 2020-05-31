@@ -1,50 +1,51 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
+    <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net452;</TargetFrameworks>
-		<Copyright>Copyright © 2017</Copyright>
-		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-		<Authors>Konrad Mattheis, Martin Berthold</Authors>
-		<Company>q-masters</Company>
-		<RepositoryUrl>https://github.com/q-masters/qlik-connectapi/</RepositoryUrl>
-		<PackageProjectUrl>https://www.nuget.org/packages/qlik-connectapi/</PackageProjectUrl>
-		<PackageTags>Qlik, GRPC, Data</PackageTags>
-		<Description>This packages allows to easy build a connector for the qlik connector api</Description>
+        <Copyright>Copyright © 2017</Copyright>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <Authors>Konrad Mattheis, Martin Berthold</Authors>
+        <Company>q-masters</Company>
+        <RepositoryUrl>https://github.com/q-masters/qlik-connectapi/</RepositoryUrl>
+        <PackageProjectUrl>https://www.nuget.org/packages/qlik-connectapi/</PackageProjectUrl>
+        <PackageTags>Qlik, GRPC, Data</PackageTags>
+        <Description>This packages allows to easy build a connector for the qlik connector api</Description>
 
-		<Version>$(GitVersion_NuGetVersion)</Version>
-		<RootNamespace>Qlik.Connect</RootNamespace>
+        <Version>$(GitVersion_NuGetVersion)</Version>
+        <RootNamespace>Qlik.Connect</RootNamespace>
 
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
-	</PropertyGroup>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    
+        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    </PropertyGroup>
 
-	<Choose>
-		<When Condition="'$(Configuration)' == 'Release'">
-			<PropertyGroup>
-				<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-			</PropertyGroup>
-		</When>
-		<Otherwise>
-			<PropertyGroup>
-				<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-			</PropertyGroup>
-		</Otherwise>
-	</Choose>
+    <Choose>
+        <When Condition="'$(Configuration)' == 'Release'">
+            <PropertyGroup>
+                <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+            </PropertyGroup>
+        </When>
+        <Otherwise>
+            <PropertyGroup>
+                <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+            </PropertyGroup>
+        </Otherwise>
+    </Choose>
 
-	<ItemGroup>
+    <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-		<PackageReference Include="GitVersionTask" Version="5.3.5" PrivateAssets="all" />
-		<PackageReference Include="Google.Protobuf" Version="3.12.2" />
-		<PackageReference Include="Grpc" Version="2.29.0" />
-		<PackageReference Include="Grpc.Core" Version="2.29.0" />
-		<PackageReference Include="Grpc.Tools" Version="2.29.0" PrivateAssets="all" />
-	</ItemGroup>
+        <PackageReference Include="GitVersionTask" Version="5.3.5" PrivateAssets="all" />
+        <PackageReference Include="Google.Protobuf" Version="3.12.2" />
+        <PackageReference Include="Grpc.Core" Version="2.29.0" />
+        <PackageReference Include="Grpc.Tools" Version="2.29.0" PrivateAssets="all" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<Protobuf Include="**/*.proto" />
-	</ItemGroup>
+    <ItemGroup>
+        <Protobuf Include="**/*.proto" />
+    </ItemGroup>
 
   <Target Name="PublishToNugetWithAPIKey" AfterTargets="GenerateNuspec">
     <ReadLinesFromFile Condition="Exists('$(SolutionDir)\..\..\nugetapikey.txt')" File="$(SolutionDir)\..\..\nugetapikey.txt">
