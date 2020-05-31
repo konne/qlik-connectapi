@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    branches: [master, development ]
+    branches: [ master, development ]
     paths:
       - 'src/**'
       - '.github/workflows/release.yml'
@@ -47,8 +47,8 @@ jobs:
         with:
           # (Optional) specify config name to use, relative to .github/. Default: release-drafter.yml
           # config-name: my-config.yml
-          tag: 2.0.0
-          name: test2.0
+          tag: '2.0.0'
+          name: 'test2.0'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
