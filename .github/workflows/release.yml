@@ -48,13 +48,13 @@ jobs:
 
     - name: set preRelease
       uses: allenevans/set-env@v1.0.0
-      with:
+      env:
         IS_PRE_RELEASE: 'true'
 
     - name: check preRelease
       if: ${{ steps.gitversion.outputs.preReleaseLabel  == ''  }}
       uses: allenevans/set-env@v1.0.0
-      with:
+      env:
         IS_PRE_RELEASE: 'false'
 
     - name: Create release
@@ -66,4 +66,4 @@ jobs:
         isPreRelease: ${{ env.IS_PRE_RELEASE }}
         name: ${{ steps.gitversion.outputs.semVer }}
         assets: |
-          src\bin\Release\*.nupkg
+          src\bin\Release\qlik-connectapi.${{ steps.gitversion.outputs.semVer }}.nupkg
