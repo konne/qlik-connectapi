@@ -33,7 +33,7 @@
                 <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
             </PropertyGroup>
         </Otherwise>
-    </Choose>
+    </Choose> 
 
     <ItemGroup>
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
@@ -45,6 +45,10 @@
 
     <ItemGroup>
         <Protobuf Include="**/*.proto" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="packages.lock.json" />
     </ItemGroup>
 
   <Target Name="PublishToNugetWithAPIKey" AfterTargets="GenerateNuspec">
