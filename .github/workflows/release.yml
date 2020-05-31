@@ -39,13 +39,15 @@ jobs:
       uses: gittools/actions/gitversion/execute@v0.9.3
 
     - name: set preRelease
-      env:
-        isPreRelease: ${{ false }}
+      uses: allenevans/set-env@v1.0.0
+      with:
+        isPreRelease: 'true'
 
-    - name: check Release    
+    - name: check preRelease
       if: ${{ steps.gitversion.outputs.preReleaseLabel  == ''  }}
-      env:
-        isPreRelease: ${{ true }}
+      uses: allenevans/set-env@v1.0.0
+      with:
+        isPreRelease: 'false'
 
     - name: Create release
       uses: gittools/actions/gitreleasemanager/create@v0.9.3
