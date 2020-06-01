@@ -24,6 +24,9 @@ jobs:
         dotnet restore --disable-parallel --locked-mode
         dotnet build --disable-parallel --configuration Release
         echo "${{ github.release.upload_url }}"
+        echo "${{ toJson(github) }}"
+        echo "${{ toJson(github.release) }}"
+        echo "${{ toJson(github.release.upload_url) }}"
 
     - name: Use GitVersion
       id: gitversion
