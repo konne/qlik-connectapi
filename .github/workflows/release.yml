@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    branches: [ master, development ]
+    paths:
+      - 'src/**'
+      - '.github/workflows/release.yml'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    ## TODO get versionspec from CSPROJ file for synchronized version
+    steps:
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.3
+      with:
+         versionSpec: '5.3.x'
+
+    - name: checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Use GitVersion
+      id: gitversion
+      uses: gittools/actions/gitversion/execute@v0.9.3
+
+    - name: create release
+      id: create_release
+      uses: release-drafter/release-drafter@v5
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        tag: '2.0.0'
+#        name: 'test2.0'
+#        version: '2.1.0'
+

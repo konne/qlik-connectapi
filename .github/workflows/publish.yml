@@ -1,0 +1,72 @@
+name: Publish
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  milestone:
+    runs-on: windows-latest
+    steps:
+    - name: Inspect contexts
+      run: |
+        echo "The github context is:"
+        echo "${{ toJson(github) }}"
+        echo ""
+        echo "The job context is:"
+        echo "${{ toJson(job) }}"
+        echo ""
+        echo "The steps context is:"
+        echo "${{ toJson(steps) }}"
+        echo ""
+        echo "The runner context is:"
+        echo "${{ toJson(runner) }}"
+        echo ""
+        echo "The strategy context is:"
+        echo "${{ toJson(strategy) }}"
+        echo ""
+        echo "The matrix context is:"
+        echo "${{ toJson(matrix) }}"
+
+
+    - name: Install GitVersion
+      uses: gittools/actions/gitversion/setup@v0.9.3
+      with:
+         versionSpec: '5.3.x'
+
+    - name: checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Cache Nuget
+      uses: actions/cache@v1
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: Build
+      working-directory: src
+      run: |
+        dotnet restore --disable-parallel --locked-mode
+        dotnet build --disable-parallel --configuration Release
+
+    - name: Use GitVersion
+      id: gitversion
+      uses: gittools/actions/gitversion/execute@v0.9.3
+
+    - name: Get Release
+      id: release
+      uses: bruceadams/get-release@v1
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.release.outputs.upload_url }} 
+        asset_path: ./src/bin/Release/qlik-connectapi..${{ steps.gitversion.outputs.semVer }}.nupkg
+        asset_name: qlik-connectapi..${{ steps.gitversion.outputs.semVer }}.nupkg
+        asset_content_type: application/zip
