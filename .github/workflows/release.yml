@@ -32,7 +32,7 @@ jobs:
       uses: release-drafter/release-drafter@v5
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        tag: '2.0.0'
-        name: 'test2.0'
-        version: '2.1.0'
+#        tag: '2.0.0'
+#        name: 'test2.0'
+#        version: '2.1.0'
 
