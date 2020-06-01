@@ -5,7 +5,7 @@ on:
     types: [ published ]
 
 jobs:
-  milestone:
+  publish:
     runs-on: windows-latest
     steps:
     - name: Install GitVersion
@@ -18,14 +18,6 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Cache Nuget
-      uses: actions/cache@v1
-      with:
-        path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-nuget-
-
     - name: Build
       working-directory: src
       run: |
@@ -36,16 +28,16 @@ jobs:
       id: gitversion
       uses: gittools/actions/gitversion/execute@v0.9.3
 
-    - name: Get Release
-      id: release
-      uses: bruceadams/get-release@v1
-
+    - name: Publish Nuget
+      run: |
+        dotnet nuget push ./src/bin/Release/qlik-connectapi.${{ steps.gitversion.outputs.semVer }}.nupkg -k ${{ secrets.NUGET_API_KEY }}
+        
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ github.release.assets_url }} 
-        asset_path: ./src/bin/Release/qlik-connectapi..${{ steps.gitversion.outputs.semVer }}.nupkg
-        asset_name: qlik-connectapi..${{ steps.gitversion.outputs.semVer }}.nupkg
+        upload_url: '${{ github.event.release.upload_url }}' 
+        asset_path: ./src/bin/Release/qlik-connectapi.${{ steps.gitversion.outputs.semVer }}.nupkg
+        asset_name: qlik-connectapi.${{ steps.gitversion.outputs.semVer }}.nupkg
         asset_content_type: application/zip
