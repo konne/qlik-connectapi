@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    branches: [ master, development ]
+    branches: [ master ]
     paths:
       - 'src/**'
       - '.github/workflows/release.yml'
@@ -31,11 +31,7 @@ jobs:
       id: create_release
       uses: release-drafter/release-drafter@v5
       with:
-        tag: '1.7.0'
-        name: 'Release 1.7.0'
+        tag: '${{ steps.gitversion.outputs.semVer }}'
+        name: 'Release ${{ steps.gitversion.outputs.semVer }}'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        tag: '2.0.0'
-        name: 'test2.0'
-#        version: '2.1.0'
-
