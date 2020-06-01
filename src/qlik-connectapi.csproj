@@ -13,7 +13,7 @@
 
         <Version>$(GitVersion_NuGetVersion)</Version>
         <RootNamespace>Qlik.Connect</RootNamespace>
-
+        <NoWarn>CS1570,CS1587,NU5105</NoWarn>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <PublishRepositoryUrl>true</PublishRepositoryUrl>
         <EmbedUntrackedSources>true</EmbedUntrackedSources>
