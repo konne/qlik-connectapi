@@ -28,6 +28,10 @@ jobs:
       id: gitversion
       uses: gittools/actions/gitversion/execute@v0.9.3
 
+    - name: Publish Nuget
+      run: |
+        dotnet nuget push ./src/bin/Release/qlik-connectapi.${{ steps.gitversion.outputs.semVer }}.nupkg -k ${{ secrets.NUGET_API_KEY }}
+        
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
       env:
