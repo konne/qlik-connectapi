@@ -41,7 +41,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ github.release.assets_url }} 
+        upload_url: ${{ github.release.upload_url }} 
         asset_path: ./src/bin/Release/qlik-connectapi..${{ steps.gitversion.outputs.semVer }}.nupkg
         asset_name: qlik-connectapi..${{ steps.gitversion.outputs.semVer }}.nupkg
         asset_content_type: application/zip
