@@ -57,16 +57,12 @@ jobs:
       id: gitversion
       uses: gittools/actions/gitversion/execute@v0.9.3
 
-    - name: Get Release
-      id: release
-      uses: bruceadams/get-release@v1.2.0
-
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.release.outputs.upload_url }} 
+        upload_url: ${{ github.release.assets_url }} 
         asset_path: ./src/bin/Release/qlik-connectapi..${{ steps.gitversion.outputs.semVer }}.nupkg
         asset_name: qlik-connectapi..${{ steps.gitversion.outputs.semVer }}.nupkg
         asset_content_type: application/zip
